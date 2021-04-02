@@ -95,3 +95,77 @@
 
     export default App
     ```
+    The above code commit as _"Simple redux use (createStore) & react-redux hooks (useSelector, useDispatch)"_
+
+---
+
+1. Refactoring code. Create `src/store` folder. Within it create `index.js` file for `store` creating:
+    ```javascript
+    import { createStore } from 'redux'
+    import { cashReducer } from './cashReducer'
+
+    export const store = createStore(cashReducer)
+    ```
+1. Move cash reducer code in `cashReduser.js` file:
+    ```javascript
+    const defaultSate = {
+      bill: 0
+    }
+
+    export const cashReducer = (state = defaultSate, action) => {
+      switch (action.type) {
+        case 'ADD_CASH':
+          return {
+            ...state,
+            bill: state.bill + action.payload
+          }
+        case 'TAKE_CASH':
+          return {
+            ...state,
+            bill: state.bill - action.payload
+          }
+        default:
+          return state
+      }
+    }
+    ```
+1. Create `customerReducer.js` file for second reducer in the interest of customers:
+    ```javascript
+    const defaultState = {
+      customers: []
+    }
+
+    export const customerReducer = (state = defaultSate, action) => {
+      switch (action.type) {
+        case 'ADD_CUSTOMER':
+          return {
+            ...state,
+            bill: state.bill + action.payload
+          }
+        case 'GET_CUSTOMER':
+          return {
+            ...state,
+            bill: state.bill - action.payload
+          }
+        default:
+          return state
+      }
+    }
+    ```
+1. For serve two reducers export `combineReducers` function from `redux`:
+    ```javascript
+    import { createStore, combineReducers } from 'redux'
+    import { cashReducer } from './cashReducer'
+    import { customerReducer } from './customerReducer'
+
+    const rootReducer = combineReducers({
+      cash: cashReducer,
+      customers: customerReducer
+    })
+
+    export const store = createStore(rootReducer)
+    ```
+    and refactoring address `bill` value of the state in _`App.js`_ component:
+    ```javascript
+    const bill = useSelector(state => state.cash.bill)
+    ```

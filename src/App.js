@@ -2,7 +2,7 @@ import './App.scss'
 import { useSelector, useDispatch } from 'react-redux'
 
 function App() {
-	const bill = useSelector(state => state.bill)
+	const bill = useSelector(state => state.cash.bill)
 	const dispatch = useDispatch()
 
 	function addCash(value) {

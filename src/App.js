@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.scss'
+import { useSelector, useDispatch } from 'react-redux'
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const bill = useSelector(state => state.bill)
+	const dispatch = useDispatch()
+
+	function addCash(value) {
+		dispatch({
+			type: 'ADD_CASH',
+			payload: value
+		})
+	}
+
+	function takeCash(value) {
+		dispatch({
+			type: 'TAKE_CASH',
+			payload: value
+		})
+	}
+
+	return (
+		<div className="App pt-4">
+			<h3>Bill: {bill}</h3>
+
+			<button
+				onClick={() => addCash(Number(prompt()))}
+				className="btn btn-success"
+			>
+				+
+			</button>
+
+			<button
+				onClick={() => takeCash(Number(prompt()))}
+				className="btn btn-danger ml-3"
+			>
+				-
+			</button>
+		</div>
+	)
 }
 
-export default App;
+export default App

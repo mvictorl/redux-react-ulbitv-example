@@ -1,70 +1,97 @@
-# Getting Started with Create React App
+## Source: [YouTube channel "Ulbi TV" playlist "Redux"](https://www.youtube.com/playlist?list=PL6DxKON1uLOHsBCJ_vVuvRsW84VnqmPp6)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+1. `# yarn create react-app .`
+1. `# yarn add redux react-redux`
+1. Create `store` in _`index.js`_:
+    ```javascript
+    import { createStore } from 'redux'
+    ```
+    and
+    ```javascript
+    const store = createStore(reducer)
+    ```
+1. Create `reducer`:
+    ```javascript
+    const defaultSate = {
+      bill: 0
+    }
 
-## Available Scripts
+    const reducer = (state = defaultSate, action) => {
+      switch (action.type) {
+        case 'ADD_CASH':
+          return {
+            ...state,
+            bill: state.bill + action.payload
+          }
+        case 'TAKE_CASH':
+          return {
+            ...state,
+            bill: state.bill - action.payload
+          }
+        default:
+          return state
+      }
+    }
+    ```
+1. In _`index.js`_:
+    ```javascript
+    import { Provider } from 'react-redux'
+    ```
+    and wrap by that component `<App />` with parameter `store`:
+    ```javascript
+    <Provider store={store}>
+      <App />
+    </Provider>
+    ```
+1. In _`App.js`_ component can get value fron state through react-redux hook `useSelector`:
+    ```javascript
+    import { useSelector } from 'react-redux'
 
-In the project directory, you can run:
+    function App() {
+      const bill = useSelector(state => state.bill)
+    . . .
+    ```
+1. In _`App.js`_ component add two functions for changing state through react-redux hook `useDispatch`:
+    ```javascript
+    import { . . ., useDispatch } from 'react-redux'
 
-### `yarn start`
+    function App() {
+      const dispatch = useDispatch()
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+      function addCash(value) {
+        dispatch({
+          type: 'ADD_CASH',
+          payload: value
+        })
+      }
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+      function takeCash(value) {
+        dispatch({
+          type: 'TAKE_CASH',
+          payload: value
+        })
+      }
+    . . .
+    ```
+1. Use this functions in `onClick` parameters of HTML element (buttons):
+    ```javascript
+    function App() {
+      . . .
+      return (
+        <div className="App">
+          <h3>Bill: {bill}</h3>
+          
+          <button 
+            onClick={() => addCash(Number(prompt()))}
+          >+</button>
+          
+          <button 
+            onClick={() => takeCash(Number(prompt()))}
+          >-</button>
+        
+        </div>
+      )
+    }
 
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+    export default App
+    ```

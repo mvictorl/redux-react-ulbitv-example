@@ -140,12 +140,14 @@
         case 'ADD_CUSTOMER':
           return {
             ...state,
-            bill: state.bill + action.payload
+            customers: [...state.customers, action.payload]
           }
-        case 'GET_CUSTOMER':
+        case 'DEL_CUSTOMER':
           return {
             ...state,
-            bill: state.bill - action.payload
+            customers: state.customers.filter(
+              customer => customer.id !== action.payload
+            )
           }
         default:
           return state
@@ -169,3 +171,73 @@
     ```javascript
     const bill = useSelector(state => state.cash.bill)
     ```
+    Separate store & two reducers files
+---
+1. In reducers files: _`cashReduser.js`_ & _`customerReducer.js`_ create action type constants:
+    ```javascript
+    const ADD_CASH = 'ADD_CASH'
+    const TAKE_CASH = 'TAKE_CASH'
+    . . .
+    ```
+    and
+    ```javascript
+    const ADD_CUSTOMER = 'ADD_CUSTOMER'
+    const DEL_CUSTOMER = 'DEL_CUSTOMER'
+    . . .
+    ```
+1. In reducers files: _`cashReduser.js`_ & _`customerReducer.js`_ create action creator functions:
+    ```javascript
+    . . .
+    export const addCashAction = cash => ({
+      type: ADD_CASH,
+      payload: cash
+    })
+
+    export const takeCashAction = cash => ({
+      type: TAKE_CASH,
+      payload: cash
+    })
+    ```
+    and
+    ```javascript
+    . . .
+    export function addCustomerAction(payload) {
+      return {
+        type: ADD_CUSTOMER,
+        payload
+      }
+    }
+
+    export function deleteCustomerAction(payload) {
+      return {
+        type: DEL_CUSTOMER,
+        payload
+      }
+    }
+    ```
+1. Import and use action creators function in _`App.js`_:
+    ```javascript
+    import { addCustomerAction, deleteCustomerAction } from './store/customerReducer'
+    import { addCashAction, takeCashAction } from './store/cashReducer'
+
+    . . .
+
+    const addCash = val => dispatch(addCashAction(val))
+    const takeCash = val => dispatch(takeCashAction(val))
+
+    function addCustomer(name) {
+      dispatch(
+        addCustomerAction({
+          id: Date.now(),
+          name
+        })
+      )
+    }
+
+    function removeCustomer(id) {
+      dispatch(deleteCustomerAction(id))
+    }
+    ```
+    The above code commit as _"Simple redux use (createStore) & react-redux hooks (useSelector, useDispatch)"_
+
+---

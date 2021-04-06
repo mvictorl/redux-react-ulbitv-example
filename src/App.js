@@ -1,22 +1,32 @@
 import './App.scss'
 import { useSelector, useDispatch } from 'react-redux'
 
+import {
+	addCustomerAction,
+	deleteCustomerAction
+} from './store/customerReducer'
+
+import { addCashAction, takeCashAction } from './store/cashReducer'
+
 function App() {
 	const bill = useSelector(state => state.cash.bill)
+	const customers = useSelector(state => state.customers.customers)
 	const dispatch = useDispatch()
 
-	function addCash(value) {
-		dispatch({
-			type: 'ADD_CASH',
-			payload: value
-		})
+	const addCash = val => dispatch(addCashAction(val))
+	const takeCash = val => dispatch(takeCashAction(val))
+
+	function addCustomer(name) {
+		dispatch(
+			addCustomerAction({
+				id: Date.now(),
+				name
+			})
+		)
 	}
 
-	function takeCash(value) {
-		dispatch({
-			type: 'TAKE_CASH',
-			payload: value
-		})
+	function removeCustomer(id) {
+		dispatch(deleteCustomerAction(id))
 	}
 
 	return (
@@ -35,6 +45,34 @@ function App() {
 				className="btn btn-danger ml-3"
 			>
 				-
+			</button>
+			<hr />
+
+			<div className="customers">
+				{customers.length > 0 ? (
+					<div>
+						<ul>
+							{customers.map(customer => (
+								<li
+									onClick={() => removeCustomer(customer.id)}
+									key={customer.id}
+								>
+									{customer.name}
+								</li>
+							))}
+						</ul>
+					</div>
+				) : (
+					<div className="nocustomer">'Нет пользователей'</div>
+				)}
+			</div>
+
+			<button onClick={() => addCustomer(prompt())} className="btn btn-success">
+				Add Customer
+			</button>
+
+			<button onClick={removeCustomer} className="btn btn-danger ml-3">
+				Get Remote Customers
 			</button>
 		</div>
 	)

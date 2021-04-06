@@ -3,3 +3,19 @@
 .App {
 	text-align: center;
 }
+
+li {
+	list-style: none;
+	font-size: larger;
+}
+
+.customers {
+	margin: 0;
+	padding-top: 1.5rem;
+}
+
+.customers ul,
+.nocustomer {
+	margin: 0;
+	padding: 0 0 1rem 0;
+}

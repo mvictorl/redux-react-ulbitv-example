@@ -1,3 +1,6 @@
+const ADD_CASH = 'ADD_CASH'
+const TAKE_CASH = 'TAKE_CASH'
+
 const defaultSate = {
 	bill: 0
 }
@@ -18,3 +21,13 @@ export const cashReducer = (state = defaultSate, action) => {
 			return state
 	}
 }
+
+export const addCashAction = cash => ({
+	type: ADD_CASH,
+	payload: cash
+})
+
+export const takeCashAction = cash => ({
+	type: TAKE_CASH,
+	payload: cash
+})

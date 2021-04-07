@@ -329,3 +329,5 @@
     The above code commit as _"Add async request customers by redux-thunk"_
 
 ---
+
+1. 

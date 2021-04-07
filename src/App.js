@@ -7,6 +7,7 @@ import {
 } from './store/customerReducer'
 
 import { addCashAction, takeCashAction } from './store/cashReducer'
+import { fetchCustomers } from './store/asyncActions/customers'
 
 function App() {
 	const bill = useSelector(state => state.cash.bill)
@@ -63,7 +64,7 @@ function App() {
 						</ul>
 					</div>
 				) : (
-					<div className="nocustomer">'Нет пользователей'</div>
+					<div className="nocustomer">'No customers yet'</div>
 				)}
 			</div>
 
@@ -71,7 +72,10 @@ function App() {
 				Add Customer
 			</button>
 
-			<button onClick={removeCustomer} className="btn btn-danger ml-3">
+			<button
+				onClick={() => dispatch(fetchCustomers())}
+				className="btn btn-danger ml-3"
+			>
 				Get Remote Customers
 			</button>
 		</div>
